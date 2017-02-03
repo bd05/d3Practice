@@ -1,31 +1,31 @@
 [{
-    "name": "Dairy Milk",
+    "current_page": "/processes",
         "manufacturer": "cadbury",
-        "price": 45,
-        "rating": 2
+        "timestamp": 1443733964,
+        "bytes_used": 117729299
 }, {
-    "name": "Galaxy",
+    "current_page": "/processes",
         "manufacturer": "Nestle",
-        "price": 42,
-        "rating": 3
+        "timestamp": 1443733969,
+        "bytes_used": 119474910
 }, {
-    "name": "Lindt",
+    "current_page": "/processes",
         "manufacturer": "Lindt",
-        "price": 80,
-        "rating": 4
+        "timestamp": 1443733974,
+        "bytes_used": 121074824
 }, {
-    "name": "Hershey",
+    "current_page": "/processes",
         "manufacturer": "Hershey",
-        "price": 40,
-        "rating": 1
+        "timestamp": 1443733979,
+        "bytes_used": 124724906
 }, {
-    "name": "Dolfin",
+    "current_page": "/processes",
         "manufacturer": "Lindt",
-        "price": 90,
-        "rating": 5
+        "timestamp": 1443733984,
+        "bytes_used": 126436945
 }, {
-    "name": "Bournville",
+    "current_page": "/processes",
         "manufacturer": "cadbury",
-        "price": 70,
-        "rating": 2
+        "timestamp": 1443733989,
+        "bytes_used": 127649558
 }]

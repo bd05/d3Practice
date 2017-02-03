@@ -3,7 +3,7 @@ body{
 }
 
 
-/*d3 styling*/
+/*bar graphs*/
 svg .bar{
     fill: steelblue;
 }
@@ -44,6 +44,6 @@ text {
     cursor:pointer;
 }
 .dot {
-    opacity: .7;
+    opacity: .5;
     cursor: pointer;
 }
