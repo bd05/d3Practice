@@ -1,3 +1,49 @@
 body{
 	font-family: Arial;
 }
+
+
+/*d3 styling*/
+svg .bar{
+    fill: steelblue;
+}
+
+svg .bar:hover{
+    fill: brown;
+}
+
+svg .axis {
+	  font: 10px sans-serif;
+}
+
+svg .axis path,.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+}
+/*scatter plot*/
+.name {
+    float:right;
+    color:#27aae1;
+}
+.axis {
+    fill: none;
+    stroke: #AAA;
+    stroke-width: 1px;
+}
+text {
+    stroke: none;
+    fill: #666666;
+    font-size: .6em;
+    font-family:"Helvetica Neue"
+}
+.label {
+    fill: #414241;
+}
+.node {
+    cursor:pointer;
+}
+.dot {
+    opacity: .7;
+    cursor: pointer;
+}
