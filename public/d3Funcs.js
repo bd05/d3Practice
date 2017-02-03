@@ -70,7 +70,9 @@ d3.json("data.json", function(error, data) {
     // now, we can get down to the data part, and drawing stuff. We are telling D3 that all nodes (g elements with class node) will have data attached to them. The 'key' we use (to let D3 know the uniqueness of items) will be the name. Not usually a great key, but fine for this example.
     var chocolate = svg.selectAll("g.node").data(data, function (d) {
         //return d.name;
-        return d.timestamp;
+        if(d.current_page == "/processes"){
+        	return d.timestamp;
+        }
     });
 
     // we 'enter' the data, making the SVG group (to contain a circle and text) with a class node. This corresponds with what we told the data it should be above.
@@ -84,12 +86,12 @@ d3.json("data.json", function(error, data) {
     // we add our first graphics element! A circle! 
     chocolateGroup.append("circle")
         .attr("r", 5)
-        .attr("class", "dot");
-        /*.style("fill", function (d) {
+        .attr("class", "dot")
+        .style("fill", function (d) {
             // remember the ordinal scales? We use the colors scale to get a colour for our manufacturer. Now each node will be coloured
             // by who makes the chocolate. 
-            return colors(d.bytes_used);
-    });*/
+            return colors(d.current_page);
+    });
 
     // now we add some text, so we can see what each item is.
  /*   chocolateGroup.append("text")
