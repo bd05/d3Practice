@@ -5,7 +5,7 @@ function showScatterPlot() {
 	console.log("in func");
     // just to have some space around items. 
     var margins = {
-        "left": 40,
+        "left": 60,
             "right": 30,
             "top": 30,
             "bottom": 30
@@ -51,7 +51,12 @@ d3.json("data.json", function(error, data) {
         .attr("text-anchor", "end")
         .attr("x", width / 2)
         .attr("y", height - 35)
-        .text("timestamp in pence (£)");
+        .text("timestamp (ms)");
+    //y axis label
+    svg.append("text")
+        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+        .attr("transform", "translate("+ (-50) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+        .text("Bytes");
 
 
     // this is the actual definition of our x and y axes. The orientation refers to where the labels appear - for the x axis, below or above the line, and for the y axis, left or right of the line. Tick padding refers to how much space between the tick and the label. There are other parameters too - see https://github.com/mbostock/d3/wiki/SVG-Axes for more information

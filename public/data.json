@@ -1,31 +1,61 @@
-[{
+[
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733964,
     "current_page": "/processes",
-        "manufacturer": "cadbury",
-        "timestamp": 1443733964,
-        "bytes_used": 117729299
-}, {
+    "bytes_used": 117729299
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733969,
     "current_page": "/processes",
-        "manufacturer": "Nestle",
-        "timestamp": 1443733969,
-        "bytes_used": 119474910
-}, {
+    "bytes_used": 119474910
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733974,
     "current_page": "/processes",
-        "manufacturer": "Lindt",
-        "timestamp": 1443733974,
-        "bytes_used": 121074824
-}, {
+    "bytes_used": 121074824
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733979,
     "current_page": "/processes",
-        "manufacturer": "Hershey",
-        "timestamp": 1443733979,
-        "bytes_used": 124724906
-}, {
+    "bytes_used": 124724906
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733984,
     "current_page": "/processes",
-        "manufacturer": "Lindt",
-        "timestamp": 1443733984,
-        "bytes_used": 126436945
-}, {
+    "bytes_used": 126436945
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733989,
     "current_page": "/processes",
-        "manufacturer": "cadbury",
-        "timestamp": 1443733989,
-        "bytes_used": 127649558
-}]
+    "bytes_used": 127649558
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733994,
+    "current_page": "/processes",
+    "bytes_used": 130318543
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443733999,
+    "current_page": "/processes",
+    "bytes_used": 132935857
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443734004,
+    "current_page": "/processes",
+    "bytes_used": 137633446
+  },
+  {
+    "did_aww_snap": false,
+    "timestamp": 1443734009,
+    "current_page": "/processes",
+    "bytes_used": 138414970
+  }]
