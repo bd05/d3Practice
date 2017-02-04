@@ -1,10 +1,10 @@
 // call the method below with the current_page name you want to view
-showScatterPlot("processes");
-//showScatterPlot("analytics");
+//showScatterPlot("/processes");
+//showScatterPlot("/analytics");
 //showScatterPlotAll(); //shows all the pages's plots
+showBarGraph();
 
 function showScatterPlot(page) {
-	console.log("in func");
     // just to have some space around items. 
     var margins = {
         "left": 60,
@@ -28,6 +28,7 @@ d3.json("data.json", function(error, data) {
     // this sets the scale that we're using for the X axis. 
     // the domain define the min and max variables to show. In this case, it's the min and max timestamps of items.
     // this is made a compact piece of code due to d3.extent which gives back the max and min of the timestamp variable within the dataset
+
     var x = d3.scale.linear()
         .domain(d3.extent(data, function (d) {
         return d.timestamp;
@@ -49,6 +50,7 @@ d3.json("data.json", function(error, data) {
 
     // this is our X axis label. Nothing too special to see here.
     svg.append("text")
+    	.attr("class", "axis-label")
         .attr("fill", "#414241")
         .attr("text-anchor", "end")
         .attr("x", width / 2)
@@ -56,6 +58,7 @@ d3.json("data.json", function(error, data) {
         .text("timestamp (ms)");
     //y axis label
     svg.append("text")
+    	.attr("class", "axis-label")
         .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate("+ (-50) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
         .text("Bytes");
@@ -72,7 +75,7 @@ d3.json("data.json", function(error, data) {
     // now, we can get down to the data part, and drawing stuff. We are telling D3 that all nodes (g elements with class node) will have data attached to them. The 'key' we use (to let D3 know the uniqueness of items) will be the name. Not usually a great key, but fine for this example.
     var chocolate = svg.selectAll("g.node").data(data, function (d) {
         //return d.name;
-        if(d.current_page == "/" + page ){
+        if(d.current_page == page ){
         	return d.timestamp;
         }
     });
@@ -87,7 +90,7 @@ d3.json("data.json", function(error, data) {
 
     // we add our first graphics element! A circle! 
     chocolateGroup.append("circle")
-        .attr("r", 5)
+        .attr("r", 3)
         .attr("class", "dot")
         .style("fill", function (d) {
             // remember the ordinal scales? We use the colors scale to get a colour for our manufacturer. Now each node will be coloured
@@ -116,14 +119,14 @@ function showScatterPlotAll() {
             "bottom": 30
     };
     
-    var width = 500;
-    var height = 500;
+    var width = 800;
+    var height = 800;
     
     // this will be our colour scale. An Ordinal scale.
     var colors = d3.scale.category10();
 
     // we add the SVG component to the scatter-load div
-    var svg = d3.select("#scatter-load").append("svg").attr("width", width).attr("height", height).append("g")
+    var svg = d3.select("#scatter-all-load").append("svg").attr("width", width).attr("height", height).append("g")
         .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
 
 // load the data
@@ -187,7 +190,7 @@ d3.json("data.json", function(error, data) {
 
     // we add our first graphics element! A circle! 
     chocolateGroup.append("circle")
-        .attr("r", 5)
+        .attr("r", 1)
         .attr("class", "dot")
         .style("fill", function (d) {
             // remember the ordinal scales? We use the colors scale to get a colour for our manufacturer. Now each node will be coloured
@@ -196,4 +199,100 @@ d3.json("data.json", function(error, data) {
     });
 
 });
+}
+
+//bar graph
+function showBarGraph() {
+ var margin = {top: 20, right: 20, bottom: 70, left: 40},
+    width = 600 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+
+// set the ranges
+var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+var y = d3.scale.linear().range([height, 0]);
+
+// define the axis
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+
+// add the SVG element
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+// load the data
+d3.json("data.json", function(error, data) {
+
+var freqTotal = d3.nest()
+  .key(function(d) { return d.Letter; })
+  .rollup(function(v) { return d3.mean(v, function(d) { return d.Freq; }); })
+  .entries(data);
+  console.log(JSON.stringify(freqTotal));
+  /*for(var i in freqTotal){
+  	console.log(freqTotal[i]);
+  }*/
+
+	data = freqTotal;
+  // scale the range of the data
+  x.domain(data.map(function(d) { return d.key; }));
+  y.domain([0, d3.max(data, function(d) { return d.values; })]);
+
+  // render axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 5)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Frequency");
+
+
+  // Add bar chart
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.key); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.values); })
+      .attr("height", function(d) { return height - y(d.values); });
+
+
+/*svg.selectAll("bar")
+   .data(data)
+   .enter()
+   .append("rect")
+   .attr("x", 0)
+   .attr("y", 0)
+   .attr("width", 20)
+   .attr("height", 100);*/
+
+});
+
 }

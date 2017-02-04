@@ -2,7 +2,6 @@ body{
 	font-family: Arial;
 }
 
-
 /*bar graphs*/
 svg .bar{
     fill: steelblue;
@@ -22,28 +21,35 @@ svg .axis path,.axis line {
 	  shape-rendering: crispEdges;
 }
 /*scatter plot*/
-.name {
+svg .name {
     float:right;
     color:#27aae1;
 }
-.axis {
+svg .axis {
     fill: none;
     stroke: #AAA;
     stroke-width: 1px;
 }
+
+svg .axis-label{
+	stroke: none;
+    fill: #666666;
+    font-size: .8em;
+    font-family:"Arial"
+}
 text {
     stroke: none;
     fill: #666666;
-    font-size: .6em;
-    font-family:"Helvetica Neue"
+    font-size: .8em;
+    font-family:"Arial"
 }
-.label {
+svg .label {
     fill: #414241;
 }
-.node {
+svg .node {
     cursor:pointer;
 }
-.dot {
+svg .dot {
     opacity: .5;
     cursor: pointer;
 }
