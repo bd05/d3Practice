@@ -203,7 +203,7 @@ d3.json("data.json", function(error, data) {
 
 //bar graph
 function showBarGraph() {
- var margin = {top: 20, right: 20, bottom: 70, left: 40},
+ var margin = {top: 20, right: 20, bottom: 70, left: 100},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -238,15 +238,13 @@ var svg = d3.select("body").append("svg")
 d3.json("data.json", function(error, data) {
 
 var freqTotal = d3.nest()
-  .key(function(d) { return d.Letter; })
-  .rollup(function(v) { return d3.mean(v, function(d) { return d.Freq; }); })
+  .key(function(d) { return d.current_page; })
+  .rollup(function(v) { return d3.mean(v, function(d) { return d.bytes_used; }); })
   .entries(data);
   console.log(JSON.stringify(freqTotal));
-  /*for(var i in freqTotal){
-  	console.log(freqTotal[i]);
-  }*/
 
-	data = freqTotal;
+data = freqTotal;
+
   // scale the range of the data
   x.domain(data.map(function(d) { return d.key; }));
   y.domain([0, d3.max(data, function(d) { return d.values; })]);
@@ -267,11 +265,10 @@ var freqTotal = d3.nest()
       .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 5)
+      .attr("y", -margin.left)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Frequency");
-
+      .text("Average bytes used");
 
   // Add bar chart
   svg.selectAll("bar")
@@ -282,16 +279,6 @@ var freqTotal = d3.nest()
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.values); })
       .attr("height", function(d) { return height - y(d.values); });
-
-
-/*svg.selectAll("bar")
-   .data(data)
-   .enter()
-   .append("rect")
-   .attr("x", 0)
-   .attr("y", 0)
-   .attr("width", 20)
-   .attr("height", 100);*/
 
 });
 
