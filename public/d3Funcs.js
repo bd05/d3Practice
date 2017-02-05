@@ -612,8 +612,8 @@ svg.append("g")
 svg.append("clipPath")
 	.attr("id", "clip")
 	.append("rect")
-	.attr("width", width)
-	.attr("height", height);
+	.attr("width", width -100)
+	.attr("height", height - 100);
 	
 	
 	
@@ -670,7 +670,7 @@ points.selectAll('.dot')
 		return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
 	);*/
 	
-	 var pagesToPlot = svg.selectAll("g.node").data(data, function (d) {
+	/* var pagesToPlot = svg.selectAll("g.node").data(data, function (d) {
         	return d.timestamp;
     })
 	 .attr("clip-path", "url(#clip)");
@@ -688,7 +688,22 @@ points.selectAll('.dot')
         .style("fill", function (d) { 
             return colors(d.current_page); //colour the data points based on the page they belong to (based on ordinal scale for colour defined earlier)
     	})
-    	.attr("clip-path", "url(#clip)");
+    	.attr("clip-path", "url(#clip)");*/
+
+    		var poly = svg.selectAll("polygon")
+			.data(data)
+			.enter()
+			.append("polygon")
+	        .attr("class","hex")
+			.attr("transform", function(d, i) {
+				return "translate("+x(d.timestamp)+","+y(d.bytes_used)+")";
+			})
+			.attr('points','4.569,2.637 0,5.276 -4.569,2.637 -4.569,-2.637 0,-5.276 4.569,-2.637')
+			.attr("opacity","0.8")
+			.attr("fill",function(d) {
+				return colors(d.current_page);
+			})
+			.attr("clip-path", "url(#clip)");;
 	
 //************************************************************
 // Zoom specific updates
@@ -698,7 +713,7 @@ function zoomed() {
 	svg.select(".y.axis").call(yAxis);   
 	//svg.selectAll('path.line').attr('d', line);  
  
-	pagesToPlot.selectAll('circle').attr("transform", function(d) { 
+	svg.selectAll('polygon').attr("transform", function(d) { 
 		return "translate(" + x(d.timestamp) + "," + y(d.bytes_used) + ")"; }
 	);  
 }
