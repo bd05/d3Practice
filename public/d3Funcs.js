@@ -1,10 +1,10 @@
 // call the method below with the current_page name you want to view
 //showScatterPlot("/processes");
-showScatterPlot("/analytics", "/processes");
-showScatterPlotAll(); //shows all the pages's plots
-showBarGraphNumBytes();
-showBarGraphNumFails();
-showBarGraphPercentFails();
+//showScatterPlot("/analytics", "/processes");
+showScatterPlotAllTest(); //shows all the pages's plots
+//showBarGraphNumBytes();
+//showBarGraphNumFails();
+//showBarGraphPercentFails();
 
 var colors = d3.scale.ordinal()
     .range(["#f43d55", "#C0DA74", "#FCA17D", "#6CBEED", "#9A348E", "#F9ECA7"]);
@@ -157,11 +157,25 @@ d3.json("data.json", function(error, data) {
     .range([height - margins.top - margins.bottom, 0]);
 
         // we add the SVG component to the scatter-load div
+	
+
     var svg = d3.select("#scatter-all-load")
     	.append("svg").attr("width", width)
     	.attr("height", height)
     	.append("g")
-        .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+        .attr("transform", "translate(" + margins.left + "," + margins.top + ")")
+        .call(d3.behavior.zoom().on("zoom", function () {
+        	svg.select(".x.axis").call(xAxis);
+		  svg.select(".y.axis").call(yAxis);
+    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+  }));
+
+    svg.append("clipPath")
+	.attr("id", "clip")
+	.append("rect")
+	.attr("width", width)
+	.attr("height", height);
+      
 
     // we add the axes SVG component. At this point, this is just a placeholder. The actual axis will be added in a bit
     svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + y.range()[0] + ")");
@@ -229,15 +243,6 @@ d3.json("data.json", function(error, data) {
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { return d; });
-
-  		function zoom() {
-		  svg.select(".x.axis").call(xAxis);
-		  svg.select(".y.axis").call(yAxis);
-          svg.selectAll("circle")			
-            .attr("transform", function(d, i) {
-				return "translate("+x(d.timestamp)+","+y(d.bytes_used)+")";
-			})
-		}
 
 });
 }
@@ -512,4 +517,190 @@ data = percentCrashes;
 
 });
 
+}
+
+
+//============zoom test==========
+//************************************************************
+// Create Margins and Axis and hook our zoom function
+//************************************************************
+function showScatterPlotAllTest() {
+var margin = {"left": 60,
+            "right": 30,
+            "top": 70,
+            "bottom": 30},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+d3.json("data.json", function(error, data) {	
+/*var x = d3.scale.linear()
+    .domain([0, 12])
+    .range([0, width]);
+ 
+var y = d3.scale.linear()
+    .domain([-1, 16])
+    .range([height, 0]);*/
+        var x = d3.scale.linear()
+        .domain(d3.extent(data, function (d) {
+        return d.timestamp;
+    	}))
+        .range([0, width]);
+
+    var y = d3.scale.linear()
+        .domain(d3.extent(data, function (d) {
+        return d.bytes_used;
+    }))
+    .range([height, 0]);
+
+	
+var xAxis = d3.svg.axis()
+    .scale(x)
+	.tickSize(-height)
+	.tickPadding(10)	
+	.tickSubdivide(true)	
+    .orient("bottom");	
+	
+var yAxis = d3.svg.axis()
+    .scale(y)
+	.tickPadding(10)
+	.tickSize(-width)
+	.tickSubdivide(true)	
+    .orient("left");
+	
+var zoom = d3.behavior.zoom()
+    .x(x)
+    .y(y)
+    .scaleExtent([1, 10])
+    .on("zoom", zoomed);	
+	
+	
+ 
+	
+	
+//************************************************************
+// Generate our SVG object
+//************************************************************	
+var svg = d3.select("#scatter-all-load").append("svg")
+	.call(zoom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+	.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y.range()[0] + ")")
+    .call(xAxis);
+ 
+svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+ 
+    // this is our X axis label. Nothing too special to see here.
+    svg.append("text")
+        .attr("fill", "#414241")
+        .attr("text-anchor", "end")
+        .attr("x", width / 2)
+        .attr("y", height - 35)
+        .text("timestamp (ms)");
+    //y axis label
+    svg.append("text")
+        .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+        .attr("transform", "translate("+ (-50) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+        .text("Bytes");
+
+svg.append("clipPath")
+	.attr("id", "clip")
+	.append("rect")
+	.attr("width", width)
+	.attr("height", height);
+	
+	
+	
+	
+	
+//************************************************************
+// Create D3 line object and draw data on our SVG object
+//************************************************************
+/*var line = d3.svg.line()
+    .interpolate("linear")	
+    .x(function(d) { return x(d.x); })
+    .y(function(d) { return y(d.y); });		
+	
+svg.selectAll('.line')
+	.data(data)
+	.enter()
+	.append("path")
+    .attr("class", "line")
+	.attr("clip-path", "url(#clip)")
+	.attr('stroke', function(d,i){ 			
+		return colors[i%colors.length];
+	})
+    .attr("d", line);		
+	
+	*/
+	
+	
+//************************************************************
+// Draw points on SVG object based on the data given
+//************************************************************
+/*var points = svg.selectAll('.dots')
+	.data(data)
+	.enter()
+	.append("g")
+    .attr("class", "dots")
+	.attr("clip-path", "url(#clip)");	
+ 
+points.selectAll('.dot')
+	.data(function(d){ 		
+		var a = [];
+		d.forEach(function(point,i){
+			a.push({'index': index, 'point': point});
+		});		
+		return a;
+	})
+	.enter()
+	.append('circle')
+	.attr('class','dot')
+	.attr("r", 2.5)
+	.attr('fill', function(d){ 	
+		return colors(d.current_page);
+	})	
+	.attr("transform", function(d) { 
+		return "translate(" + x(d.point.x) + "," + y(d.point.y) + ")"; }
+	);*/
+	
+	 var pagesToPlot = svg.selectAll("g.node").data(data, function (d) {
+        	return d.timestamp;
+    })
+	 .attr("clip-path", "url(#clip)");
+
+   
+    var pageGroup = pagesToPlot.enter()
+    .append("g")
+    .attr("class", "node")
+    .attr('transform', function (d) {
+        return "translate(" + x(d.timestamp) + "," + y(d.bytes_used) + ")";
+    })
+    .append("circle")
+        .attr("r", 3)
+        .attr("class", "dot")
+        .style("fill", function (d) { 
+            return colors(d.current_page); //colour the data points based on the page they belong to (based on ordinal scale for colour defined earlier)
+    	})
+    	.attr("clip-path", "url(#clip)");
+	
+//************************************************************
+// Zoom specific updates
+//************************************************************
+function zoomed() {
+	svg.select(".x.axis").call(xAxis);
+	svg.select(".y.axis").call(yAxis);   
+	//svg.selectAll('path.line').attr('d', line);  
+ 
+	pagesToPlot.selectAll('circle').attr("transform", function(d) { 
+		return "translate(" + x(d.timestamp) + "," + y(d.bytes_used) + ")"; }
+	);  
+}
+});
 }
