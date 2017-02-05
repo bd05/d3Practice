@@ -4,7 +4,7 @@ body{
 
 /*bar graphs*/
 svg .bar{
-    fill: steelblue;
+ /*   fill: steelblue;*/
 }
 
 svg .bar:hover{
@@ -34,7 +34,7 @@ svg .axis {
 svg .axis-label{
 	stroke: none;
     fill: #666666;
-    font-size: .8em;
+    font-size: 1em;
     font-family:"Arial"
 }
 text {
