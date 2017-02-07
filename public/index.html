@@ -20,7 +20,7 @@
             <h3>Bytes used vs Time</h3>
             <center>
             <div id="scatter-plot"></div>
-                <p>Zoom in and drag the scatter plot to focus on specific areas of data. Select which pages' data you would like to display with the switches.</p>
+                <p>Zoom in and drag the scatter plot to focus on specific areas of data. Select which pages' data you would like to display with the switches. Display multiple pages' data at once for comparison.</p>
             </center>
         </div>
         <div class="row slider-row">
@@ -60,22 +60,22 @@
             <center>
                 <button type="button" id="update-view" class="btn btn-info">Display selected pages</button>
             </center>
-            <button type="button" id="toggle-graph" class="btn btn-info">toggle</button>
+            <button type="button" id="toggle-graph" class="btn btn-info">Toggle number/percentage of fails</button>
     </div>
      <div class="container"> 
 
         <div class="row bar-graph-row">
-            <div class="col col-sm-6 col-md-6 col-lg-6">
+            <div class="col col-md-6 col-lg-6">
                 <div id="bar-graph">
-                    <h3>Average Number of Bytes used at each timestamp</h3>
+                    <h4>Average Number of Bytes used at each timestamp</h4>
                 </div>
             </div>
-            <div class="col col-sm-6 col-md-6 col-lg-6">
-                <div id="bar-graph-num-fails">
-                    <h3>Number of times each page failed</h3>
+            <div class="col col-md-6 col-lg-6">
+                <div id="bar-graph-num-fails" class="bar-graph-fails">
+                    <h4>Number of times each page failed</h4>
                 </div>
-                <div id="bar-graph-percent-fails">
-                    <h3>Failure rate of each page</h3>
+                <div id="bar-graph-percent-fails" class="bar-graph-fails">
+                    <h4>Failure rate of each page</h4>
                 </div>
             </div>
  

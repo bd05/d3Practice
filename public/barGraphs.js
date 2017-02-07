@@ -30,7 +30,7 @@ function toggleGraph() {
 //bar graph for #fails vs page
 //****************************************************
 function showBarGraphNumFails() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
+ var margin = {top: 20, right: 20, bottom: 100, left: 70},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -86,15 +86,16 @@ data = numCrashes;
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
+
   svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
-      .append("text")
+    .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", -margin.left)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Number of Crashes");
+      .text("Number of crashes");
 
   // Add bar chart
   svg.selectAll("bar")
@@ -117,7 +118,7 @@ data = numCrashes;
 //bar graph for %fails vs page
 //*********************************************************
 function showBarGraphPercentFails() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
+ var margin = {top: 20, right: 20, bottom: 100, left: 70},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -209,7 +210,7 @@ data = percentCrashes;
 //***********************************************************************
 //bar graph for avg #bytes used vs page
 function showBarGraphNumBytes() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
+ var margin = {top: 20, right: 20, bottom: 100, left: 100},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 

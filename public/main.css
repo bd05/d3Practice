@@ -10,22 +10,33 @@ h1,h2,h3{
 /*svg .bar{
     fill: steelblue;
 }*/
+/*#bar-graph-num-fails{
+    margin-left: 15px;
+}
+
+#bar-graph-percent-fails{
+    margin-left: 15px;
+}*/
+.bar-graph-fails{
+    margin-left: 45px;
+}
+
 #toggle-graph{
     margin-top: 50px;
 }
 
 .bar-graph-row{
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 3%;
 }
 
 svg .bar:hover{
     fill: rgba(173, 175, 209, 0.34);
 }
 
-svg .axis {
+/*svg .axis {
 	  font: 10px sans-serif;
-}
+}*/
 
 svg .axis path,.axis line {
 	  fill: none;
@@ -47,13 +58,13 @@ svg .axis {
 svg .axis-label{
 	stroke: none;
     fill: #666666;
-    font-size: 1em;
+    font-size: 0.8em;
     font-family:"Arial"
 }
 text {
     stroke: none;
     fill: #666666;
-    font-size: .8em;
+    font-size: 0.8em;
     font-family:"Arial"
 }
 svg .label {
@@ -91,7 +102,8 @@ svg .dot {
 }
 
 .dot:hover {
-    stroke: rgba(68, 127, 255, 0.3);
+    /*stroke: rgba(75, 127, 255, 0.3);*/
+    stroke: rgba(18, 241, 170, 0.5);
 }
 
 /*toggle switches*/
@@ -117,6 +129,10 @@ svg .dot {
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
+  /*box shadow*/
+  -webkit-box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
+  -moz-box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
+  box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
 }
 
 .slider:before {
@@ -156,7 +172,7 @@ input:checked + .slider:before {
 
 .switch-name{
     display: inline-block;
-    padding: 20px;
+    padding: 30px;
 }
 
 /*buttons custom css*/
@@ -165,8 +181,13 @@ input:checked + .slider:before {
 }
 
 .slider-row{
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
+.btn{
+   -webkit-box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
+   -moz-box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
+   box-shadow: 3px 2px 5px 0px rgba(0,0,0,0.31);
+}
 

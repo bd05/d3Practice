@@ -61,12 +61,12 @@ function updateView(){
 //                    D3 code for graphs
 //**************************************************************************
 var colors = d3.scale.ordinal()
-    .range(["#f43d55", "#C0DA74", "#FCA17D", "#6CBEED", "#9A348E", "#F9ECA7"]);
+    .range(["#f43d55", "#325D7F", "#6D5C7E", "#C06C86", "#F2727F", "#F9B294"]);
 
 function scatterPlot(page1, page2, page3, page4, page5, page6){
 var w = 960; //width and height
 var h = 500;
-var padding = 70;
+var padding = 90;
 
 d3.json("data.json", function(data) {
 //load data acording to page selection
@@ -164,9 +164,27 @@ svg.append("g")
     .attr("class", "y axis")
     .attr("transform", "translate(" + (padding) + ", 0)")
     .call(yAxis);
-/*
+
+//axis labels
+
+svg.append("text")      // text label for the x axis
+    .attr("x", w/2 )
+    .attr("y", (h - padding + 40))
+    .style("text-anchor", "middle")
+    .text("Timestamp (s)");
+
+svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0)
+        .attr("x",0 - (h/2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Number of bytes used");
+
+ 
+
 //add colour coded legend
-     var legend = svg.selectAll(".legend")
+  /*   var legend = svg.selectAll(".legend")
       .data(colors.domain())
       .enter().append("g")
       .attr("class", "legend")
