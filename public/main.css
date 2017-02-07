@@ -6,17 +6,6 @@ h1,h2,h3{
     text-align: center;
 }
 
-/*bar graphs*/
-/*svg .bar{
-    fill: steelblue;
-}*/
-/*#bar-graph-num-fails{
-    margin-left: 15px;
-}
-
-#bar-graph-percent-fails{
-    margin-left: 15px;
-}*/
 .bar-graph-fails{
     margin-left: 45px;
 }
@@ -34,15 +23,9 @@ svg .bar:hover{
     fill: rgba(173, 175, 209, 0.34);
 }
 
-/*svg .axis {
-	  font: 10px sans-serif;
-}*/
-
 svg .axis path,.axis line {
 	  fill: none;
       stroke: #AAA;
-/*	  stroke: #000;
-	  shape-rendering: crispEdges;*/
 }
 /*scatter plot*/
 svg .name {
@@ -77,16 +60,6 @@ svg .dot {
     opacity: .5;
     cursor: pointer;
 }
-
-/*.grid .tick {
-    stroke: lightgrey;
-    opacity: 0.7;
-    shape-rendering: crispEdges;
-}
- 
-.grid path {
-    stroke-width: 0;
-}*/
  
 .axis path {
     fill: none;
@@ -102,7 +75,6 @@ svg .dot {
 }
 
 .dot:hover {
-    /*stroke: rgba(75, 127, 255, 0.3);*/
     stroke: rgba(18, 241, 170, 0.5);
 }
 

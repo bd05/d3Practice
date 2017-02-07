@@ -1,5 +1,5 @@
 
-var page1 = "/analytics";
+var page1 = "/analytics"; //analytics page displayed as default view
 var page2 = "";
 var page3 = "";
 var page4 = "";
@@ -14,17 +14,13 @@ scatterPlot(page1, page2, page3, page4, page5, page6);
 document.getElementById("update-view").onclick = function() {updateView()}
 
 function updateView(){
+  //check which options the user has selected
   var checkBox1Status = document.getElementById("checkbox1").checked;
   var checkBox2Status = document.getElementById("checkbox2").checked;
   var checkBox3Status = document.getElementById("checkbox3").checked;
   var checkBox4Status = document.getElementById("checkbox4").checked;
   var checkBox5Status = document.getElementById("checkbox5").checked;
   var checkBox6Status = document.getElementById("checkbox6").checked;
-
-  console.log(checkBox1Status);
-  console.log(checkBox2Status);
-  console.log(checkBox3Status);
-
 
   if(checkBox1Status == true)
     page1="/processes";
@@ -50,16 +46,16 @@ function updateView(){
     page6="/player";
   else
     page6="";
-  console.log(page1 + " " + page2 + " " + page3);
-    d3.select("svg").remove();
-    console.log("removed scatterplot");
-    scatterPlot(page1,page2,page3,page4,page5,page6);
+
+  d3.select("svg").remove(); //remove old scatter plot
+  scatterPlot(page1,page2,page3,page4,page5,page6); //create new scatter plot based on user selection
 }
 
 
 //**************************************************************************
 //                    D3 code for graphs
 //**************************************************************************
+//colour scheme for both scatter graph and bar graphs
 var colors = d3.scale.ordinal()
     .range(["#f43d55", "#325D7F", "#6D5C7E", "#C06C86", "#F2727F", "#F9B294"]);
 
@@ -68,6 +64,7 @@ var w = 960; //width and height
 var h = 500;
 var padding = 90;
 
+//load data from external json file
 d3.json("data.json", function(data) {
 //load data acording to page selection
 var filtered = data.filter(function (a) { 
@@ -76,14 +73,13 @@ var filtered = data.filter(function (a) {
 });
 //console.log(JSON.stringify(filtered));
 
-data = filtered;
-
+data = filtered; //filtered json returned, with only relevant points
+//set x and y axes settings
 var xScale = d3.scale.linear()
     .domain(d3.extent(data, function (d) {
         return d.timestamp;
     }))
     .range([padding, w - padding]);
-
 
 var yScale = d3.scale.linear()
     .domain(d3.extent(data, function (d) {
@@ -114,18 +110,19 @@ function zoom() {
 
 }
 
-
 var zooming = d3.behavior.zoom()
     .x(xScale)
     .y(yScale)
     .on("zoom", zoom);
 
+//create the scatter plot
 var svg = d3.select("#scatter-plot")
     .append("svg")
     .attr("width", w)
     .attr("height", h)
     .attr("class", "chart")
 
+//address overflow when panning and zooming
 svg.append("clipPath")
   .attr("id", "clipping")
   .append("rect")
@@ -134,7 +131,7 @@ svg.append("clipPath")
 
 svg.call(zooming);
 
-
+//create and place data points
 svg.selectAll("circle")
     .data(data)
     .enter()
@@ -154,7 +151,7 @@ svg.selectAll("circle")
       })
     .attr("clip-path", "url(#clipping)");
 
-
+//render the x and y axes
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + (h - padding) + ")")
@@ -166,44 +163,19 @@ svg.append("g")
     .call(yAxis);
 
 //axis labels
-
 svg.append("text")      // text label for the x axis
     .attr("x", w/2 )
     .attr("y", (h - padding + 40))
     .style("text-anchor", "middle")
     .text("Timestamp (s)");
 
-svg.append("text")
+svg.append("text")   //label for y-axis
         .attr("transform", "rotate(-90)")
         .attr("y", 0)
         .attr("x",0 - (h/2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .text("Number of bytes used");
-
- 
-
-//add colour coded legend
-  /*   var legend = svg.selectAll(".legend")
-      .data(colors.domain())
-      .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-  legend.append("rect") //legend will appear as rquares
-      .attr("x", w - 210) //position legend
-      .attr("y", h - 185)
-      .attr("width", 15)
-      .attr("height", 15)
-      .style("fill", colors);
-
-  legend.append("text")
-      .attr("x", w - 210 + 120)
-      .attr("y", h - 180)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) { return d; }); */
-
 });
 
 }

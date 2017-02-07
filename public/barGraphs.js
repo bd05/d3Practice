@@ -35,23 +35,21 @@ function showBarGraphNumFails() {
     height = 300 - margin.top - margin.bottom;
 
 
-// set the ranges
+// x and y axis settings
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
 var y = d3.scale.linear().range([height, 0]);
 
-// define the axis
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
 
-
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left")
-    .ticks(10);
+    .ticks(6);
 
 
-// add the SVG element
+// svg element for bar graph
 var svg = d3.select("#bar-graph-num-fails").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -60,22 +58,22 @@ var svg = d3.select("#bar-graph-num-fails").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 
-// load the data
+// load the data from external json file
 d3.json("data.json", function(error, data) {
-
+//reformat data so the json only contains crashes for each page
 var numCrashes = d3.nest()
   .key(function(d) { return d.current_page; })
   .rollup(function(v) { return d3.sum(v, function(d) { return d.did_aww_snap==true; }); })
   .entries(data);
  // console.log(JSON.stringify(numCrashes));
 
-data = numCrashes;
+data = numCrashes; //assign data variable to reformatted data
 
-  // scale the range of the data
+  // based on data, apply more settings to x and y axis (apply domain and range)
   x.domain(data.map(function(d) { return d.key; }));
   y.domain([0, d3.max(data, function(d) { return d.values; })]);
 
-  // render axis
+  // render x and y axes
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -85,7 +83,6 @@ data = numCrashes;
       .attr("dx", "-.8em")
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
-
 
   svg.append("g")
       .attr("class", "y axis")
@@ -97,7 +94,7 @@ data = numCrashes;
       .style("text-anchor", "end")
       .text("Number of crashes");
 
-  // Add bar chart
+  // Add data to the bar chart
   svg.selectAll("bar")
       .data(data)
     .enter().append("rect")
@@ -122,26 +119,18 @@ function showBarGraphPercentFails() {
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
- //var colors = d3.scale.category10();
-
-// set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
 var y = d3.scale.linear().range([height, 0]);
 
-// define the axis
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
 
-
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left")
-    .ticks(10);
+    .ticks(7);
 
-
-// add the SVG element
 var svg = d3.select("#bar-graph-percent-fails").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -149,10 +138,9 @@ var svg = d3.select("#bar-graph-percent-fails").append("svg")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
 
-
 // load the data
 d3.json("data.json", function(error, data) {
-
+//reformat data to include only pages and their crashes, but divide by number of points for each page to get percentage
 var percentCrashes = d3.nest()
   .key(function(d) { return d.current_page; })
   .rollup(function(v) { 
@@ -161,9 +149,9 @@ var percentCrashes = d3.nest()
   .entries(data);
   //console.log(JSON.stringify(percentCrashes));
 
-data = percentCrashes;
+data = percentCrashes; //assign 
 
-  // scale the range of the data
+  // apply domain and range to x and y axes based on reformatted data
   x.domain(data.map(function(d) { return d.key; }));
   y.domain([0, d3.max(data, function(d) { return d.values; })]);
 
@@ -188,7 +176,7 @@ data = percentCrashes;
       .style("text-anchor", "end")
       .text("percent Crashes");
 
-  // Add bar chart
+  // Add data to bar chart
   svg.selectAll("bar")
       .data(data)
     .enter().append("rect")
@@ -214,31 +202,24 @@ function showBarGraphNumBytes() {
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
-
-// set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
 var y = d3.scale.linear().range([height, 0]);
 
-// define the axis
 var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom")
-
+    .orient("bottom");
 
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left")
-    .ticks(10);
+    .ticks(6);
 
-
-// add the SVG element
 var svg = d3.select("#bar-graph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
-
 
 // load the data
 d3.json("data.json", function(error, data) {
@@ -251,11 +232,9 @@ var freqTotal = d3.nest()
 
 data = freqTotal;
 
-  // scale the range of the data
   x.domain(data.map(function(d) { return d.key; }));
   y.domain([0, d3.max(data, function(d) { return d.values; })]);
 
-  // render axis
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -276,7 +255,6 @@ data = freqTotal;
       .style("text-anchor", "end")
       .text("Average bytes used");
 
-  // Add bar chart
   svg.selectAll("bar")
       .data(data)
     .enter().append("rect")
