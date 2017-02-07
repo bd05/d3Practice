@@ -8,7 +8,7 @@ svg .bar{
 }
 
 svg .bar:hover{
-    fill: brown;
+    fill: rgba(173, 175, 209, 0.34);
 }
 
 svg .axis {
@@ -141,11 +141,10 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-/*custom switch toggle styling*/
-/*.slider.round{
-    padding: 30px;
-}*/
+.toggle-switches{
+   margin: auto;
+}
 
-.slide{
-   margin-left:100px;
+#update-view{
+    margin: auto;
 }

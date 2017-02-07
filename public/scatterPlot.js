@@ -64,15 +64,12 @@ var colors = d3.scale.ordinal()
     .range(["#f43d55", "#C0DA74", "#FCA17D", "#6CBEED", "#9A348E", "#F9ECA7"]);
 
 function scatterPlot(page1, page2, page3, page4, page5, page6){
-  console.log("making a scatterPlot");
-  console.log(page1 + " " + page2 + " " + page3);
-var w = 960;
+var w = 960; //width and height
 var h = 500;
-
-var padding = 100;
+var padding = 70;
 
 d3.json("data.json", function(data) {
-
+//load data acording to page selection
 var filtered = data.filter(function (a) { 
   if ((a.current_page === page1) || (a.current_page === page2) || (a.current_page === page3) || (a.current_page === page4) || (a.current_page === page5) || (a.current_page === page6)){ 
       return a.current_page } 
@@ -82,11 +79,9 @@ var filtered = data.filter(function (a) {
 data = filtered;
 
 var xScale = d3.scale.linear()
-    .domain([d3.min(data, function (d) {
-    return d.timestamp;
-}), d3.max(data, function (d) {
-    return d.timestamp;
-})])
+    .domain(d3.extent(data, function (d) {
+        return d.timestamp;
+    }))
     .range([padding, w - padding]);
 
 
@@ -103,10 +98,9 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left")
-    .ticks(4);
+    .ticks(5);
 
 function zoom() {
-
     svg.select(".x.axis").call(xAxis);
     svg.select(".y.axis").call(yAxis);
 
@@ -121,7 +115,7 @@ function zoom() {
 }
 
 
-var zoomBeh = d3.behavior.zoom()
+var zooming = d3.behavior.zoom()
     .x(xScale)
     .y(yScale)
     .on("zoom", zoom);
@@ -133,12 +127,12 @@ var svg = d3.select("#scatter-plot")
     .attr("class", "chart")
 
 svg.append("clipPath")
-  .attr("id", "clip")
+  .attr("id", "clipping")
   .append("rect")
   .attr("width", w - padding)
   .attr("height", h - padding);
 
-svg.call(zoomBeh);
+svg.call(zooming);
 
 
 svg.selectAll("circle")
@@ -148,17 +142,17 @@ svg.selectAll("circle")
     .attr("class", "dot")
     .attr("cx", function (d) {
     return xScale(d.timestamp);
-})
+  })
     .attr("cy", function (d) {
     return yScale(d.bytes_used);
-})
+  })
     .attr("r", 2)
     .attr("stroke", "black")
     .attr("stroke-width", 0.2)
           .style("fill", function (d) { 
             return colors(d.current_page); //colour the data points based on the page they belong to (based on ordinal scale for colour defined earlier)
       })
-    .attr("clip-path", "url(#clip)");
+    .attr("clip-path", "url(#clipping)");
 
 
 svg.append("g")
@@ -194,10 +188,4 @@ svg.append("g")
 
 });
 
-}
-
-function remove() {
-    d3.select("svg").remove();
-    console.log("removed scatterplot");
-    scatterPlot(page1,page2,page3);
 }
