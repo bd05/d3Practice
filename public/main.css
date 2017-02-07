@@ -141,10 +141,12 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.toggle-switches{
-   margin: auto;
+.switch-name{
+    display: inline-block;
+    padding: 20px;
 }
 
-#update-view{
-    margin: auto;
+/*buttons custom css*/
+#toggle-graph{
+     float: right;
 }
