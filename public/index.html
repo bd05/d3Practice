@@ -11,14 +11,50 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             </head>
-    <body>
-    
-        <div id="scatter-plot"></div>
-        <div id="bar-graph"></div>
-        <div id="bar-graph-num-fails"></div>
-        <div id="bar-graph-percent-fails"></div>
-<!--     	<script type="text/javascript" src="data.json"></script> -->
-        <script type="text/javascript" src="d3Funcs.js"></script>
+<body>
+    <div class="row scatter-section">
+        <div class="row">
+            <div id="scatter-plot"></div>
+        </div>
+        <div class="row justify-content-md-center">
+            <label class="switch">
+                <input type="checkbox" id="checkbox1" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="checkbox2" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="checkbox3" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="checkbox4" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="checkbox5" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <label class="switch">
+                <input type="checkbox" id="checkbox6" class="slide">
+                <div class="slider round"></div>
+            </label>
+            <button type="button" id="update-view" class="btn btn-info">Display selected pages</button>
+        </div>
+    </div>
+        <div class="row">
+            <div id="bar-graph"></div>
+            <div id="bar-graph-num-fails"></div>
+<!--             <div id="bar-graph-percent-fails"></div> -->
+            <label class="switch">
+                <input type="checkbox" id="checkbox-bar-graph" class="slide">
+                <div class="slider round"></div>
+            </label>
+        <div class="row">
 
-    </body>
+</body>
+         <script type="text/javascript" src="barGraphs.js"></script>
+     <script type="text/javascript" src="d3Funcs.js"></script>
 </html>

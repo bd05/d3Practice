@@ -1,23 +1,81 @@
-// call the method below with the current_page name you want to view
-//showScatterPlot("/processes");
-scatterPlot("/analytics","/data","");
-showBarGraphNumBytes();
-showBarGraphNumFails();
-showBarGraphPercentFails();
 
+var page1 = "/analytics";
+var page2 = "";
+var page3 = "";
+var page4 = "";
+var page5 = "";
+var page6 = "";
+scatterPlot(page1, page2, page3, page4, page5, page6);
+
+//**************************************************************
+//                      UI
+//******************************************************************
+
+document.getElementById("update-view").onclick = function() {updateView()}
+
+function updateView(){
+  var checkBox1Status = document.getElementById("checkbox1").checked;
+  var checkBox2Status = document.getElementById("checkbox2").checked;
+  var checkBox3Status = document.getElementById("checkbox3").checked;
+  var checkBox4Status = document.getElementById("checkbox4").checked;
+  var checkBox5Status = document.getElementById("checkbox5").checked;
+  var checkBox6Status = document.getElementById("checkbox6").checked;
+
+  console.log(checkBox1Status);
+  console.log(checkBox2Status);
+  console.log(checkBox3Status);
+
+
+  if(checkBox1Status == true)
+    page1="/processes";
+  else
+    page1="";
+  if(checkBox2Status == true)
+    page2="/analytics";
+  else
+    page2="";
+  if(checkBox3Status == true)
+    page3="/data";
+  else
+    page3="";
+  if(checkBox4Status == true)
+    page4="/processes/editor";
+  else
+    page4="";
+  if(checkBox5Status == true)
+    page5="/";
+  else
+    page5="";
+  if(checkBox6Status == true)
+    page6="/player";
+  else
+    page6="";
+  console.log(page1 + " " + page2 + " " + page3);
+    d3.select("svg").remove();
+    console.log("removed scatterplot");
+    scatterPlot(page1,page2,page3,page4,page5,page6);
+}
+
+
+//**************************************************************************
+//                    D3 code for graphs
+//**************************************************************************
 var colors = d3.scale.ordinal()
     .range(["#f43d55", "#C0DA74", "#FCA17D", "#6CBEED", "#9A348E", "#F9ECA7"]);
 
-function scatterPlot(page, page2, page3){
-w = 960;
-h = 500;
+function scatterPlot(page1, page2, page3, page4, page5, page6){
+  console.log("making a scatterPlot");
+  console.log(page1 + " " + page2 + " " + page3);
+var w = 960;
+var h = 500;
 
 var padding = 100;
 
 d3.json("data.json", function(data) {
 
 var filtered = data.filter(function (a) { 
-  if ((a.current_page === page) || (a.current_page === page2)){ return a.current_page } 
+  if ((a.current_page === page1) || (a.current_page === page2) || (a.current_page === page3) || (a.current_page === page4) || (a.current_page === page5) || (a.current_page === page6)){ 
+      return a.current_page } 
 });
 //console.log(JSON.stringify(filtered));
 
@@ -112,7 +170,7 @@ svg.append("g")
     .attr("class", "y axis")
     .attr("transform", "translate(" + (padding) + ", 0)")
     .call(yAxis);
-
+/*
 //add colour coded legend
      var legend = svg.selectAll(".legend")
       .data(colors.domain())
@@ -132,281 +190,14 @@ svg.append("g")
       .attr("y", h - 180)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d) { return d; });
+      .text(function(d) { return d; }); */
 
 });
 
 }
 
-//bar graph for avg #bytes used vs page
-function showBarGraphNumBytes() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
-    width = 600 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-
-
-// set the ranges
-var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-var y = d3.scale.linear().range([height, 0]);
-
-// define the axis
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
-
-
-// add the SVG element
-var svg = d3.select("#bar-graph").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// load the data
-d3.json("data.json", function(error, data) {
-
-var freqTotal = d3.nest()
-  .key(function(d) { return d.current_page; })
-  .rollup(function(v) { return d3.mean(v, function(d) { return d.bytes_used; }); })
-  .entries(data);
-  console.log(JSON.stringify(freqTotal));
-
-data = freqTotal;
-
-  // scale the range of the data
-  x.domain(data.map(function(d) { return d.key; }));
-  y.domain([0, d3.max(data, function(d) { return d.values; })]);
-
-  // render axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", "-.55em")
-      .attr("transform", "rotate(-90)" );
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Average bytes used");
-
-  // Add bar chart
-  svg.selectAll("bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.key); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.values); })
-      .attr("height", function(d) { return height - y(d.values); })
-      .attr("fill", function(d, i) {
-		    return colors(i);
-		});;
-
-  //zoom
-  		function zoom() {
-		  svg.select(".x.axis").call(xAxis);
-		  svg.select(".y.axis").call(yAxis);
-          svg.selectAll("polygon")			
-            .attr("transform", function(d, i) {
-				return "translate("+x(d.TotalEmployed2011)+","+y(d.MedianSalary2011)+")";
-			})
-	        .attr('points','4.569,2.637 0,5.276 -4.569,2.637 -4.569,-2.637 0,-5.276 4.569,-2.637')
-		}
-
-});
-
+function remove() {
+    d3.select("svg").remove();
+    console.log("removed scatterplot");
+    scatterPlot(page1,page2,page3);
 }
-
-
-//bar graph for #fails vs page
-
-function showBarGraphNumFails() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
-    width = 600 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-
-
-// set the ranges
-var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-var y = d3.scale.linear().range([height, 0]);
-
-// define the axis
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
-
-
-// add the SVG element
-var svg = d3.select("#bar-graph-num-fails").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// load the data
-d3.json("data.json", function(error, data) {
-
-var numCrashes = d3.nest()
-  .key(function(d) { return d.current_page; })
-  .rollup(function(v) { return d3.sum(v, function(d) { return d.did_aww_snap==true; }); })
-  .entries(data);
-  console.log(JSON.stringify(numCrashes));
-
-data = numCrashes;
-
-  // scale the range of the data
-  x.domain(data.map(function(d) { return d.key; }));
-  y.domain([0, d3.max(data, function(d) { return d.values; })]);
-
-  // render axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-      .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", "-.55em")
-      .attr("transform", "rotate(-90)" );
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Number of Crashes");
-
-  // Add bar chart
-  svg.selectAll("bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.key); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.values); })
-      .attr("height", function(d) { return height - y(d.values); })
-      .attr("fill", function(d, i) {
-		    return colors(i);
-		});;
-
-});
-
-}
-
-
-//bar graph for %fails vs page
-
-function showBarGraphPercentFails() {
- var margin = {top: 20, right: 20, bottom: 70, left: 100},
-    width = 600 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-
- //var colors = d3.scale.category10();
-
-// set the ranges
-var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
-var y = d3.scale.linear().range([height, 0]);
-
-// define the axis
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
-
-
-// add the SVG element
-var svg = d3.select("#bar-graph-percent-fails").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
-
-
-// load the data
-d3.json("data.json", function(error, data) {
-
-var percentCrashes = d3.nest()
-  .key(function(d) { return d.current_page; })
-  .rollup(function(v) { return (d3.sum(v, function(d) { return d.did_aww_snap==true; }))/v.length; })
-  .entries(data);
-  console.log(JSON.stringify(percentCrashes));
-
-data = percentCrashes;
-
-  // scale the range of the data
-  x.domain(data.map(function(d) { return d.key; }));
-  y.domain([0, d3.max(data, function(d) { return d.values; })]);
-
-  // render axis
-  svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", "-.55em")
-      .attr("transform", "rotate(-90)" );
-
-  svg.append("g")
-      .attr("class", "axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("percent Crashes");
-
-  // Add bar chart
-  svg.selectAll("bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.key); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.values); })
-      .attr("height", function(d) { return height - y(d.values); })
-      .attr("fill", function(d, i) {
-		    return colors(i);
-		});
-
-});
-
-}
-
